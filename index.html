@@ -1,0 +1,34 @@
+<html>
+<head>
+  <title>js-sfswnr</title>  
+</head>
+<body>
+<div id="app">
+	<p id="loading">Loading...</p>
+</div>
+</body>
+<script type="text/javascript">
+const appDiv = document.getElementById('app');
+function fetch_news(){
+fetch('https://newsapi.org/v2/everything?domains=wsj.com,nytimes.com&pageSize=100&apiKey=125cae3691a140489efa2b69a8d31d88').
+then(res=>res.json())
+.then(response=>{
+	document.getElementById('loading').style.display="none";
+  for(var i=0; i < response.articles.length; i++){
+    var item = document.createElement('li');
+    item.innerHTML = `<a href="${response.articles[i].url}">${response.articles[i].title}</a>`
+    appDiv.appendChild(item);
+  }
+  }).
+catch(error=>console.log(error))
+}
+
+addEventListener('scroll', function() {
+  if (appDiv.scrollTop + appDiv.clientHeight >= appDiv.scrollHeight) {
+    fetch_news();
+  }
+});
+
+fetch_news()
+</script>
+</html>
